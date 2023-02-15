@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.*;
 public class HttpControllerTest {
 
     private static final String TAG = "HttpControllerTest : ";
+    // http://localhost:8000/blog/http/lombok --> 로 접속해야함
     @GetMapping("/http/lombok")
     public String lombokTest() {
 //        Member m = new Member(1, "ssar", "1234", "email");
-        Member m = Member.builder().username("ssar").password("1234").email("ssar@nate.com").build(); // builder 패턴 쓰면 이렇게 원하는 것만 넣을 수 있음
+        Member m = Member.builder().username("ssar").password("1234").email("ssar@nate.com").build(); // builder 패턴 쓰면 이렇게 원하는 것만 넣을 수 있음, 순서를 지킬 필요가 없음
 //        System.out.println(TAG+"getter : " + m.getId());
 //        m.setId(5000);
 //        System.out.println(TAG+"setter : " + m.getId());
