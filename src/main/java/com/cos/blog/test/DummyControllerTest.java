@@ -4,8 +4,13 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 // html파일이 아니라 data를 리턴해주는 controller
@@ -14,7 +19,19 @@ public class DummyControllerTest {
 
     @Autowired // 메모리 올릴때 autowired도 같이 올라감, 스프링컴포넌트 스캔 할때 알아서 띄워줌, 이것이 의존성 주입(DI)
     private UserRepository userRepository;
+    @GetMapping("/dummy/users")
+    public List<User> list(){
+        return userRepository.findAll();
+    }
 
+    // 한 페이지당 2건에 데이터를 리턴받아 볼 예정
+    @GetMapping("/dummy/user")
+    public List<User> pageList(@PageableDefault(size=2, sort="id", direction = Sort.Direction.DESC) Pageable pageable){
+//        Page<User> users = userRepository.findAll(pageable);
+        Page<User> pagingUser = userRepository.findAll(pageable);
+        List<User> users = pagingUser.getContent(); // json 내에 내용만 return 위해 getContent() 사용
+        return users;
+    }
     // {id] 주소로 파라미터를 전달 받을 수 있음
     // http:// localhost:8000/blog/dummy/user/3
     @GetMapping("/dummy/user/{id}")
